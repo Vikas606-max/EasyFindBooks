@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg-main: grey;
+      --color-bg-glass:#B3C8CF;
+      --color-text-main: #e6e6e6;
+      --color-accent: #ae89fa;
+      --color-accent-light:#89a8b2;
+      --color-accent-dark: #8c6cd9;
+      --color-navbar: rgba(35, 36, 58, 0.9);
+      --color-navbar-border: rgba(255, 255, 255, 0.1);
+      --color-card-hover: rgba(170, 172, 218, 0.7);
+      --color-glass-border: #3a4044;
+      --color-glass-shadow: rgba(58, 61, 65, 0.1);
+      --color-glass-text: rgba(230, 230, 230, 0.9);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: rgba(197, 177, 177, 0.9);
+      color: var(--color-text-main);
+      background-image: linear-gradient(135deg, #9FB3DF 0%, #BDDDE4 40%, #9EC6F3 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    .glass, .profile-card, .tab-content, .profile-box, .section-box {
+      background: var(--color-bg-glass) !important;
+      box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 16px;
+      border: 1px solid var(--color-glass-border);
+      color: var(--color-text-main);
+    }
+    .navbar {
+      background: var(--color-navbar) !important;
+      border-bottom: 2px solid var(--color-navbar-border);
+      box-shadow: 0 4px 24px rgba(20,22,25,0.10);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .navbar .nav-link, .navbar-brand {
+      color: var(--color-text-main) !important;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(44,46,58,0.13);
+      letter-spacing: 1px;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:hover {
+      color: var(--color-accent) !important;
+      background: var(--color-card-hover);
+      border-radius: 8px;
+    }
+    .profile-card {
+      border-radius: 20px;
+      box-shadow: 0 8px 32px var(--color-glass-shadow);
+      background: var(--color-bg-glass) !important;
+      padding: 2.5rem 2rem 2rem 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--color-glass-border);
+    }
+    .rounded-circle {
+      border: 4px solid var(--color-accent);
+      object-fit: cover;
+      width: 120px;
+      height: 120px;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.10);
+      transition: box-shadow 0.2s;
+      background: var(--color-accent-light);
+    }
+    .rounded-circle:hover {
+      box-shadow: 0 4px 16px var(--color-accent-dark);
+    }
+    .btn-link.p-0 {
+      color: var(--color-accent-dark);
+      font-weight: 500;
+      text-decoration: underline;
+      font-size: 1rem;
+    }
+    .btn-link.p-0:hover {
+      color: var(--color-accent);
+    }
+    .btn-outline-primary {
+      border-radius: 8px;
+      font-weight: 500;
+      padding: 0.4rem 1.2rem;
+      font-size: 1rem;
+      color: var(--color-accent) !important;
+      border-color: var(--color-accent) !important;
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(4px);
+    }
+    .btn-outline-primary:hover, .btn-outline-primary:focus {
+      background: var(--color-accent) !important;
+      color: #fff !important;
+      border-color: var(--color-accent) !important;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .profile-info h3 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      margin-bottom: 0.4rem;
+    }
+    .profile-info p {
+      font-size: 1.1rem;
+      color: var(--color-accent-light);
+      margin-bottom: 0.4rem;
+    }
+    .nav-tabs {
+      border-bottom: 2px solid var(--color-accent);
+      margin-top: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .nav-tabs .nav-link.active {
+      background: var(--color-accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .nav-tabs .nav-link {
+      color: var(--color-accent-dark);
+      font-weight: 500;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      font-size: 1.1rem;
+    }
+    .tab-content {
+      background: var(--color-bg-glass) !important;
+      border-radius: 0 0 12px 12px;
+      border: 1px solid var(--color-glass-border);
+      border-top: none;
+      margin-bottom: 0.5rem;
+      margin-top: -2px;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.04);
+      backdrop-filter: blur(6px);
+      color: var(--color-text-main);
+    }
+    .fw-bold {
+      color: var(--color-accent-dark);
+      font-weight: 600 !important;
+      font-size: 1.08rem;
+    }
+    .about-label {
+      color: var(--color-accent-light);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .about-value {
+      font-size: 1.08rem;
+      color: #fff;
+    }
+    footer {
+      background: var(--color-bg-glass);
+      color: #fff;
+      padding: 32px 0 0 0;
+      margin-top: 48px;
+      border-top: 2px solid var(--color-navbar-border);
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      width: 100%;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    footer a {
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-right: 12px;
+      transition: color 0.2s;
+    }
+    footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    ::-webkit-scrollbar {
+      background: var(--color-bg-glass);
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-accent);
+      border-radius: 4px;
+    }
+    @media (max-width: 767px) {
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+      }
+      .profile-info {
+        text-align: center;
+      }
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-content {
+      flex: 1 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:#fff;"><i class="bi bi-book-half"></i> EaseFindBooks</a>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/"><i class="bi bi-house-door-fill"></i> Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/recommend">FindBook</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/select_mood">GetByMood</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/profilePage.html">Profile</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm p-4 profile-card glass">
+        <div class="profile-header">
+          <div class="text-center">
+            <form class="mt-2" method="POST" action="/upload_profile_pic" enctype="multipart/form-data">
+              <label for="profilePicInput">
+                <img src="{{ user_image or 'https://via.placeholder.com/120' }}" class="rounded-circle mb-2" style="cursor:pointer;">
+              </label>
+              <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" style="display:none;" onchange="this.form.submit()">
+              <div>
+                <button type="button" class="btn btn-link p-0" onclick="document.getElementById('profilePicInput').click();">Change Photo</button>
+              </div>
+            </form>
+          </div>
+          <div class="profile-info">
+            <h3>{{ user_name or 'User Name' }}</h3>
+            <p>{{ user_bio or 'Add your bio here...' }}</p>
+            <button class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+          </div>
+        </div>
+
+        <ul class="nav nav-tabs mt-4" id="profileTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">About</button>
+          </li>
+        </ul>
+        <div class="tab-content p-3 border border-top-0 rounded-bottom glass" id="profileTabContent">
+          <div class="tab-pane fade show active" id="about" role="tabpanel">
+            <div class="row mb-2">
+              <div class="col-4 fw-bold about-label">Username:</div>
+              <div class="col-8 about-value">{{ user_username or 'username' }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4 fw-bold about-label">Email:</div>
+              <div class="col-8 about-value">{{ user_email or 'user@email.com' }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4 fw-bold about-label">Phone:</div>
+              <div class="col-8 about-value">{{ user_phone or '123 456 7890' }}</div>
+            </div>
+            {% if user_history %}
+            <h2 style="text-align:center; margin-top: 40px;">Activity History</h2>
+            <table style="width: 90%; margin: 20px auto; border-collapse: collapse; font-family: Arial, sans-serif;">
+                <thead style="background-color: var(--color-accent-dark);color: var(--color-text-main);">
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Action</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Detail</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in user_history %}
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc;">{{ entry[0] }}</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">{{ entry[1] }}</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">{{ entry[2] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                  </table>
+            {% else %}
+            <p style="text-align:center; color: #888;">No history found.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content glass">
+      <form method="POST" action="/edit_profile">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="editName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editName" name="name" value="{{ user_name or '' }}">
+          </div>
+          <div class="mb-3">
+            <label for="editUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="editUsername" name="username" value="{{ user_username or '' }}">
+          </div>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmail" name="email" value="{{ user_email or '' }}">
+          </div>
+          <div class="mb-3">
+            <label for="editPhone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="editPhone" name="phone" value="{{ user_phone or '' }}">
+          </div>
+          <div class="mb-3">
+            <label for="editBio" class="form-label">Bio</label>
+            <textarea class="form-control" id="editBio" name="bio" rows="3">{{ user_bio or '' }}</textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer>
+    <div class="container text-center">
+      <div class="mb-2">
+        <a href="/"><i class="bi bi-house-door-fill"></i> Home</a>
+        <a href="/recommend">FindBook</a>
+        <a href="/select_mood">GetByMood</a>
+        <a href="/profilePage.html">User Profile Page</a>
+      </div>
+      <div class="mb-2">
+        <a href="mailto:suresh112813@gmail.com">suresh112813@gmail.com</a>
+        <a href="mailto:vikasshejul591@gmail.com">vikasshejul591@gmail.com</a>
+        <a href="mailto:mahajankalyani2005@email.com">mahajankalyani2005@email.com</a>
+        <a href="mailto:yashmpatil02005@email.com">yashmpatil02005@email.com</a>
+      </div>
+      <div class="mb-2">
+        <span>Follow us:</span>
+        <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div>
+        &copy; {{ year }} EaseFindBooks. All rights reserved.
+        <p>Team leader <a href="mailto:sureshrathod@gmail.com">sureshrathod@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

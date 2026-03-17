@@ -3,80 +3,585 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Book Recommender</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <title>EaseFindBooks</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    body {
-      background: linear-gradient(to right, #7091e6, #fff);
+    :root {
+  --color-bg-main: grey;
+  --color-bg-glass:#B3C8CF;
+  --color-text-main: #000;
+  --color-accent: #1b263b;
+  --color-accent-light:#89a8b2;
+  --color-accent-dark: #8c6cd9;
+  --color-navbar: rgba(35, 36, 58, 0.9);
+  --color-navbar-border: rgba(255, 255, 255, 0.1);
+  --color-card-hover: rgba(170, 172, 218, 0.7);
+  --color-glass-border: #3a4044;
+  --color-glass-shadow: rgba(58, 61, 65, 0.1);
+  --color-glass-text: rgba(14, 14, 14, 0.9);
+}
+body {
+  background:#415a77;
+  color: #1b263b;
+  background-image: linear-gradient(135deg, #9FB3DF 0%, #BDDDE4 40%, #9EC6F3 100%);
+  
+}
+
+    .glass {
+      background: var(--color-bg-glass);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 16px;
+      border: 1px solid var(--color-glass-border);
     }
-    .text-color {
-      color: black;
+    .navbar {
+      background: var(--color-navbar) !important;
+      border-bottom: 2px solid var(--color-navbar-border);
+      box-shadow: 0 4px 24px rgba(20,22,25,0.10);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .navbar-brand {
-      font-weight: bold;
+    .navbar .nav-link, .navbar-brand {
+      color: white;
+      font-weight: 500;
+      text-shadow: 0 1px 2px #8c6cd9;
+      letter-spacing: 1px;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:hover {
+      color: var(--color-accent) !important;
+      background: var(--color-card-hover);
+      border-radius: 8px;
+    }
+    .sidebar-custom {
+      background: var(--color-navbar);
+      min-height: 100vh;
+      border-right: 2px solid var(--color-navbar-border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      z-index: 1040;
+      padding-top: 70px;
+      box-shadow: 0 4px 24px rgba(20,22,25,0.10);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .sidebar-custom .nav-link {
+      color: white;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+    .sidebar-custom .nav-link.active, .sidebar-custom .nav-link:hover {
+      background: var(--color-card-hover);
+      color: var(--color-accent);
+    }
+    .main-content {
+      margin-left: 240px;
+      padding: 32px 16px 0 16px;
+      min-height: 100vh;
+    }
+    @media (max-width: 991px) {
+      .sidebar-custom {
+        position: static;
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        padding-top: 0;
+      }
+      .main-content {
+        margin-left: 0;
+        padding-top: 16px;
+      }
+    }
+    .welcome-message {
+      background: var(--color-card-hover);
+      color: #1b263b;
+      border-radius: 12px;
+      padding: 18px 0;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+      text-align: center;
+      border: 1px solid var(--color-glass-border);
+      box-shadow: 0 2px 8px rgba(20,22,25,0.10);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .carousel-inner {
+      background: var(--color-bg-glass);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      padding: 24px 0;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      border: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .carousel-item blockquote {
+      color: #1b263b;
+      font-size: 1.5rem;
+      font-family: 'Amatic SC', cursive, sans-serif;
+      text-shadow: 0 1px 2px rgba(44,46,58,0.13);
+    }
+    .carousel-item .blockquote-footer {
+      color: var(--color-accent);
+      font-size: 1rem;
+    }
+    .section-box {
+      background: var(--color-bg-glass);
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(20,22,25,0.10);
+      padding: 32px 24px;
+      margin-bottom: 32px;
+      border: 1px solid var(--color-glass-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .section-title {
+      color: #1b263b;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px rgba(44,46,58,0.13);
+    }
+    .playlist-card, .card {
+      background: var(--color-accent-light) !important;
+      color: #1b263b ;
+      border-radius: 14px;
+      border: 3px solid var(--color-glass-border) !important;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .playlist-card:hover, .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 24px var(--color-accent-dark);
+      background: var(--color-card-hover) !important;
     }
     .card-img-top {
       width: 100%;
-      height: 250px;
+      height: 180px;
       object-fit: cover;
+      border-radius: 14px 14px 0 0;
+      background: var(--color-accent-light);
     }
-    .card {
-      background-color: #ede8f5;
-      border-radius: 10px;
+    .card-title {
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
-    h1.section-title {
-      font-size: 40px;
-      margin-top: 30px;
-      background-color: #ede8f5;
-      padding: 10px 20px;
-      border-radius: 8px;
+    .card-text {
+      color: black;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .btn-outline-primary {
+      color: whitesmoke;
+      border-color: var(--color-accent) !important;
+      background: var(--color-bg-glass);
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+    .btn-outline-primary:hover, .btn-outline-primary:focus {
+      background: var(--color-accent) !important;
+      color: #fff !important;
+      border-color: var(--color-accent) !important;
+    }
+    .btn-outline-secondary {
+      color: var(--color-accent-light) !important;
+      border-color: var(--color-accent-light) !important;
+      background: transparent !important;
+    }
+    .btn-outline-secondary:hover, .btn-outline-secondary:focus {
+      background: var(--color-accent-light) !important;
+      color: var(--color-bg-main) !important;
+      border-color: var(--color-accent-light) !important;
+    }
+    footer {
+      background: var(--color-bg-glass);
+      color: #000;
+      padding: 32px 0 0 0;
+      margin-top: 48px;
+      border-top: 2px solid var(--color-navbar-border);
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    footer a {
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-right: 12px;
+    }
+    footer a:hover {
+      color: var(--color-text-main);
+      text-decoration: underline;
+    }
+    ::-webkit-scrollbar {
+      background: var(--color-bg-glass);
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-accent);
+      border-radius: 4px;
+    }
+    .carousel, .carousel-inner, .carousel *:focus {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07) !important;
+      outline: none !important;
+    }
+    @media (min-width: 992px) {
+      .navbar {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        z-index: 1050;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
+  <div class="sidebar-custom d-none d-lg-block">
+    <a href="/" class="d-flex align-items-center mb-4 text-white text-decoration-none ps-2">
+      <span class="navbar-brand" href="#"><i class="bi bi-book-half" style="font-size:32px;"></i> EaseFindBooks</span>
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto ps-2">
+      <li class="nav-item"><a href="/" class="nav-link"><i class="bi bi-house-door-fill me-2"></i> Home</a></li>
+      <li><a href="/recommend" class="nav-link"><i class="bi bi-search me-2"></i> FindBook</a></li>
+      <li><a href="/select_mood" class="nav-link"><i class="bi bi-emoji-smile me-2"></i> GetByMood</a></li>
+      <li><a href="/contact" class="nav-link"><i class="bi bi-envelope me-2"></i> Contact</a></li>
+      <li><a href="/chatbot" class="nav-link"><i class="bi bi-robot me-2"></i> Chatbot</a></li>
+      <li><a href="/login" class="nav-link"><i class="bi bi-box-arrow-in-right me-2"></i> Login</a></li>
+      <li><a href="/book" class="nav-link">Download Books</a></li>
+    </ul>
+    <hr style="border-color: rgba(249, 241, 241, 0.1);">
+    <div class="small ps-2" style="color: #e0e1dd;">&copy; {{ year }}<br>EaseFindBooks</div>
+  </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #ae2896, #3c009d);">
-    <div class="container-fluid">
-      <ul class="navbar-nav flex-row me-auto">
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="/">Home</a>
-        </li>
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="/recommend">Recommend</a>
-        </li>
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="/select_mood">Select Mood</a>
-        </li>
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="#">Contact</a>
-        </li>
-      </ul>
-      <a class="navbar-brand text-white ms-auto" href="#">Book Recommender</a>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid" style="color: #fff;">
+      <form class="d-flex me-3" action="/recommend_books" method="post" style="width: 320px; max-width: 100%;">
+        <input class="form-control me-2" type="text" name="user_input" placeholder="Search books, genres..." aria-label="Recommend Book" required>
+        <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+      <a class="navbar-brand" href="/"><i class="bi bi-book-half"></i> EaseFindBooks</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house-door-fill"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/recommend">FindBook</a></li>
+          <li class="nav-item"><a class="nav-link" href="/select_mood">GetByMood</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+          {% if session.name %}
+            <li class="nav-item ms-3">
+              <a class="nav-link" href="/profile" title="Profile" style="padding-top: 2px;">
+                <i class="bi bi-person-circle" style="font-size: 2rem; vertical-align: middle;"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item ms-3">
+              <a class="nav-link" href="/login" style="font-size: 1.15rem; font-weight: 600; border-left: 2px solid #ae89fa; margin-left: 10px; padding-left: 18px;">
+                Login
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <div class="container">
-    <h1 class="text-color section-title text-center">Top 50 Books</h1>
+  <div class="main-content">
+    {% if session.name %}
+      <div class="welcome-message">
+        Welcome, <strong>{{ session.name }}</strong>! Glad to see you at EaseFindBooks.
+      </div>
+    {% endif %}
 
-    <div class="row">
-      {% for i in range(book_name|length) %}
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="{{ image[i] }}" alt="Book cover">
-            <div class="card-body">
-              <h6 class="text-color">{{ book_name[i] }}</h6>
-              <h6 class="text-color">{{ author[i] }}</h6>
-              <h6 class="text-color">Votes: {{ votes[i] }}</h6>
-              <h6 class="text-color">Ratings: {{ rating[i] }}</h6>
-            </div>
+    <!-- Quotes Carousel -->
+    <div id="quotesCarousel" class="carousel slide carousel-fade mb-3" data-bs-ride="carousel" data-bs-interval="3500">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="quote-glass text-center p-4">
+            <span class="d-block mb-2" style="font-size:1.2rem;">
+              "A room without books is like a body without a soul...."
+            </span>
+            <span class="d-block" style="color:#415a77; font-size:1rem;">
+              — Marcus Tullius Cicero
+            </span>
           </div>
         </div>
-      {% endfor %}
+        <div class="carousel-item">
+          <div class="quote-glass text-center p-4">
+            <span class="d-block mb-2" style="font-size:1.2rem;">
+              "So many books, so little time...."
+            </span>
+            <span class="d-block" style="color:#415a77; font-size:1rem;">
+              — Frank Zappa
+            </span>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="quote-glass text-center p-4">
+            <span class="d-block mb-2" style="font-size:1.2rem;">
+              "Books open new doors to old worlds."
+            </span>
+            <span class="d-block" style="color:#415a77; font-size:1rem;">
+              — Megan Whalen Turner
+            </span>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="quote-glass text-center p-4">
+            <span class="d-block mb-2" style="font-size:1.2rem;">
+              "The only thing you absolutely have to know is the location of the library...."
+            </span>
+            <span class="d-block" style="color:#415a77; font-size:1rem;">
+              — Albert Einstein
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Top 50 Books Section -->
+    <div class="section-box">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="section-title"><i class="bi bi-star-fill me-2"></i> Top 50 Books</h2>
+        <div>
+          <button id="top50-more-btn" class="btn btn-outline-primary btn-sm">More</button>
+          <button id="top50-less-btn" class="btn btn-outline-secondary btn-sm" style="display:none;">View Less</button>
+        </div>
+      </div>
+      <div class="row" id="top50-books-row">
+        {% for i in range(book_name|length) %}
+          <div class="col-md-3 col-6 mb-4 top50-book-card" {% if i >= 4 %}style="display:none;"{% endif %}>
+            <div class="card playlist-card h-100">
+              <img class="card-img-top" src="{{ image[i] }}" alt="Book cover">
+              <div class="card-body p-3">
+                <h6 class="card-title">{{ book_name[i] }}</h6>
+                <p class="card-text">{{ author[i] }}</p>
+                <p class="card-text">Votes: {{ votes[i] }}</p>
+                <p class="card-text">Ratings: {{ rating[i] }}</p>
+                <button class="btn btn-outline-primary btn-sm mt-2" onclick="fetchAndShowDownloadLinks('{{ book_name[i] }}', '{{ author[i] }}', this)">Download</button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Mood Based Books Sections -->
+    {% for mood, books in mood_top_books.items() %}
+      <div class="section-box">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="section-title"><i class="bi bi-music-note-list me-2"></i> {{ mood|capitalize }} Vibes</h2>
+          <div>
+            <button class="btn btn-outline-primary btn-sm mood-more-btn" id="mood-more-btn-{{ mood }}" data-mood="{{ mood }}">More</button>
+            <button class="btn btn-outline-secondary btn-sm mood-less-btn" id="mood-less-btn-{{ mood }}" data-mood="{{ mood }}" style="display:none;">View Less</button>
+          </div>
+        </div>
+        <div class="row" id="mood-books-row-{{ mood }}">
+          {% for book in books %}
+            <div class="col-md-3 col-6 mb-4 mood-book-card-{{ mood }}" {% if loop.index > 4 %}{% endif %}>
+              <div class="card playlist-card h-100">
+                <img src="{{ book.image }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body p-3">
+                  <h6 class="card-title">{{ book.title }}</h6>
+                  <p class="card-text">{{ book.author }}</p>
+                  <button class="btn btn-outline-primary btn-sm mt-2" onclick="fetchAndShowDownloadLinks('{{ book.title }}', '{{ book.author }}', this)">Download</button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
   </div>
 
+  <!-- JS for More/View Less functionality -->
+  <script>
+    // Top 50 Books "More" and "View Less" buttons
+    document.getElementById('top50-more-btn').onclick = function() {
+      document.querySelectorAll('.top50-book-card').forEach(function(card) {
+        card.style.display = '';
+      });
+      this.style.display = 'none';
+      document.getElementById('top50-less-btn').style.display = '';
+    };
+    document.getElementById('top50-less-btn').onclick = function() {
+      document.querySelectorAll('.top50-book-card').forEach(function(card, idx) {
+        card.style.display = (idx < 4) ? '' : 'none';
+      });
+      this.style.display = 'none';
+      document.getElementById('top50-more-btn').style.display = '';
+    };
+
+    // Mood sections "More" and "View Less" buttons
+    document.querySelectorAll('.mood-more-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        var mood = btn.getAttribute('data-mood');
+        document.querySelectorAll('.mood-book-card-' + mood).forEach(function(card) {
+          card.style.display = '';
+        });
+        btn.style.display = 'none';
+        document.getElementById('mood-less-btn-' + mood).style.display = '';
+      };
+    });
+    document.querySelectorAll('.mood-less-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        var mood = btn.getAttribute('data-mood');
+        document.querySelectorAll('.mood-book-card-' + mood).forEach(function(card, idx) {
+          card.style.display = (idx < 4) ? '' : 'none';
+        });
+        btn.style.display = 'none';
+        document.getElementById('mood-more-btn-' + mood).style.display = '';
+      };
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container text-center">
+      <div class="mb-2">
+        <a href="/"><i class="bi bi-house-door-fill"></i> Home</a>
+        <a href="/recommend">FindBook</a>
+        <a href="/select_mood">GetByMood</a>
+        <a href="/profilePage.html">User Profile Page</a>
+      </div>
+      <div class="mb-2">
+        <a href="mailto:suresh112813@gmail.com">suresh112813@gmail.com</a>
+        <a href="mailto:vikasshejul591@gmail.com">vikasshejul591@gmail.com</a>
+        <a href="mailto:mahajankalyani2005@email.com">mahajankalyani2005@email.com</a>
+        <a href="mailto:yashmpatil02005@email.com">yashmpatil02005@email.com</a>
+      </div>
+      <div class="mb-2">
+        <span>Follow us:</span>
+        <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div>
+        &copy; {{ year }} EaseFindBooks. All rights reserved.
+        <p>Team leader <a href="mailto:sureshrathod@gmail.com">sureshrathod@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Book info modal logic
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.card.playlist-card').forEach(function(card) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function() {
+          const img = card.querySelector('.card-img-top')?.src || '';
+          const title = card.querySelector('.card-title')?.innerText || '';
+          const author = card.querySelector('.card-text')?.innerText || '';
+          let votes = '', rating = '';
+          if(card.innerHTML.includes('Votes:')) {
+            const texts = card.querySelectorAll('.card-text');
+            votes = texts[1]?.innerText || '';
+            rating = texts[2]?.innerText || '';
+          }
+          document.getElementById('bookModalImg').src = img;
+          document.getElementById('bookModalTitle').innerText = title;
+          document.getElementById('bookModalAuthor').innerText = author;
+          document.getElementById('bookModalVotes').innerText = votes;
+          document.getElementById('bookModalRating').innerText = rating;
+          document.getElementById('bookModalVotesRow').style.display = votes ? '' : 'none';
+          document.getElementById('bookModalRatingRow').style.display = rating ? '' : 'none';
+          var modal = new bootstrap.Modal(document.getElementById('bookInfoModal'));
+          modal.show();
+        });
+      });
+    });
+  </script>
+
+  <!--download script-->
+  
+<script>
+function fetchAndShowDownloadLinks(title, author, btn) {
+  btn.disabled = true;
+  btn.innerText = 'Loading...';
+  fetch(`/search?q=${encodeURIComponent(title)}`)
+    .then(res => res.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.innerText = 'Download';
+      // Find the best match by title (and optionally author)
+      let book = data.find(b => b.title.toLowerCase() === title.toLowerCase());
+      if (!book && data.length > 0) book = data[0];
+      if (!book || !book.download_links) {
+        alert('No downloads available for this book.');
+        return;
+      }
+      let links = '';
+      if (book.download_links.epub)
+        links += `<a href="${book.download_links.epub}" target="_blank" download class="btn btn-sm btn-outline-primary m-1">EPUB</a>`;
+      if (book.download_links.pdf)
+        links += `<a href="${book.download_links.pdf}" target="_blank" download class="btn btn-sm btn-outline-primary m-1">PDF</a>`;
+      if (book.download_links.text)
+        links += `<a href="${book.download_links.text}" target="_blank" download class="btn btn-sm btn-outline-primary m-1">Text</a>`;
+      if (book.download_links.kindle)
+        links += `<a href="${book.download_links.kindle}" target="_blank" download class="btn btn-sm btn-outline-primary m-1">Kindle</a>`;
+      if (!links) links = 'No downloads available.';
+      // Show links in a simple modal or alert
+      const modal = document.createElement('div');
+      modal.innerHTML = `
+        <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;">
+          <div style="background:#23243a;padding:24px 32px;border-radius:12px;max-width:90vw;text-align:center;">
+            <h5 style="color:#ae89fa;">Download "${title}"</h5>
+            <div style="margin:16px 0;">${links}</div>
+            <a href="/" class="btn btn-outline-primary m-1">Back to Home</a>
+          </div>
+        </div>`;
+      document.body.appendChild(modal.firstElementChild);
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerText = 'Download';
+      alert('Error fetching download links.');
+    });
+}
+</script>
+
+  <!-- Book Info Modal -->
+  <div class="modal fade" id="bookInfoModal" tabindex="-1" aria-labelledby="bookInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background:#23243a; color:#e6e6e6;">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="bookInfoModalLabel">Book Info</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="bookModalImg" src="" alt="Book cover" class="mb-3" style="max-width:120px; max-height:180px; border-radius:8px;">
+          <h5 id="bookModalTitle" class="mb-2"></h5>
+          <div id="bookModalAuthor" class="mb-2"></div>
+          <div id="bookModalVotesRow" class="mb-1"><span id="bookModalVotes"></span></div>
+          <div id="bookModalRatingRow" class="mb-1"><span id="bookModalRating"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

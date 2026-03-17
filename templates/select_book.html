@@ -5,103 +5,305 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Books for Mood: {{ mood|capitalize }}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
+    :root {
+      --color-bg-main: #2C2E3A;
+      --color-bg-glass: rgba(44,46,58,0.70);
+      --color-glass-border: rgba(179,180,189,0.25);
+      --color-accent: #1b263b;
+      --color-accent-dark: #050A44;
+      --color-accent-light: #B3B4BD;
+      --color-text-main: #fff;
+      --color-text-muted: #B3B4BD;
+      --color-navbar: rgba(44,46,58,0.80);
+      --color-navbar-border: #141619;
+      --color-card-hover: rgba(10,33,192,0.15);
+    }
     body {
-      background: linear-gradient(to right, #7091e6, #ffffff);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg-main);
+      background-image: linear-gradient(135deg, #141619 0%, #2C2E3A 40%, #0A21C0 100%);
+      color: var(--color-text-main);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-attachment: fixed;
+      background-size: cover;
     }
-
+    .glass, .container {
+      background: var(--color-bg-glass) !important;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 16px;
+      border: 1px solid var(--color-glass-border);
+      color: var(--color-text-main);
+    }
     .navbar {
-      background: linear-gradient(to right, #ae2896, #3c009d);
-      padding: 0.8rem 1rem;
+      background: var(--color-navbar) !important;
+      border-bottom: 2px solid var(--color-navbar-border);
+      box-shadow: 0 4px 24px rgba(20,22,25,0.10);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-
-    .navbar-brand {
+    .navbar .navbar-brand {
+      color: #fff !important;
       font-weight: bold;
       font-size: 1.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px rgba(44,46,58,0.13);
     }
-
-    .nav-link {
+    .navbar .nav-link {
+      color: var(--color-text-main) !important;
       font-weight: 500;
       transition: color 0.3s;
     }
-
-    .nav-link:hover {
-      color: #ffc107 !important;
+    .navbar .nav-link.active, .navbar .nav-link:hover {
+      color: var(--color-accent) !important;
+      background: var(--color-card-hover);
+      border-radius: 8px;
     }
-
     .section-heading {
       font-size: 2rem;
       font-weight: 600;
-      background-color: #ede8f5;
+      color:#1b263b;
+      background-color: var(--color-bg-glass);
       padding: 15px;
       border-radius: 10px;
       text-align: center;
       margin-bottom: 2rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
     }
-
     .card {
-      background-color: #ede8f5;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      background: var(--color-bg-glass) !important;
+      border-radius: 14px;
+      border: 1px solid var(--color-glass-border) !important;
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      color: var(--color-text-main) !important;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       height: 100%;
     }
-
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      transform: scale(1.04);
+      box-shadow: 0 4px 24px var(--color-accent-dark);
+      background: var(--color-card-hover) !important;
     }
-
     .card-img-top {
       width: 100%;
-      height: 240px;
+      height: 220px;
       object-fit: cover;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      background: var(--color-accent-light);
     }
-
-    .card-body {
-      padding: 1rem;
+    .card-title {
+      color: var(--color-accent) !important;
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
-
-    .text-color {
-      color: #000;
+    .card-text {
+      color: var(--color-text-muted);
+      font-size: 0.97rem;
+      margin-bottom: 0.2rem;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
-
     .btn-group {
-      margin: 3rem auto;
+      margin: 3rem auto 1.5rem auto;
     }
-
     .btn-group a {
       min-width: 180px;
       font-weight: 500;
     }
-
     .alert {
       font-size: 1rem;
       margin-top: 20px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--color-accent-dark);
+      border: 1px solid var(--color-accent);
+    }
+    @media (max-width: 768px) {
+      .section-heading {
+        font-size: 1.3rem;
+        padding: 10px;
+      }
+      .card-img-top {
+        height: 120px;
+      }
+      .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+    footer {
+      background: var(--color-bg-glass);
+      color: var(--color-text-main);
+      padding: 32px 0 0 0;
+      margin-top: 48px;
+      border-top: 2px solid var(--color-navbar-border);
+      box-shadow: 0 2px 8px rgba(20,22,25,0.07);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    footer a {
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-right: 12px;
+    }
+    footer a:hover {
+      color: var(--color-accent-light);
+      text-decoration: underline;
+    }
+    ::-webkit-scrollbar {
+      background: var(--color-bg-glass);
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-accent);
+      border-radius: 4px;
     }
   </style>
+  <style>
+:root {
+  --color-bg-main: grey;
+  --color-bg-glass:#B3C8CF;
+  --color-text-main: #e6e6e6;
+  --color-accent: #1b263b;
+  --color-accent-light:#89a8b2;
+  --color-accent-dark: #8c6cd9;
+  --color-navbar: rgba(35, 36, 58, 0.9);
+  --color-navbar-border: rgba(255, 255, 255, 0.1);
+  --color-card-hover: rgba(170, 172, 218, 0.7);
+  --color-glass-border: #3a4044;
+  --color-glass-shadow: rgba(58, 61, 65, 0.1);
+  --color-glass-text: rgba(230, 230, 230, 0.9);
+}
+body {
+  background: rgba(197, 177, 177, 0.9);
+  color: white;
+  background-image: linear-gradient(135deg, #9FB3DF 0%, #BDDDE4 40%, #9EC6F3 100%);
+}
+.glass,
+.section-box,
+.select-book-box {
+  background: var(--color-bg-glass);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.navbar, .sidebar-custom {
+  background: var(--color-navbar) !important;
+  color: var(--color-text-main);
+  border-bottom: 2px solid var(--color-navbar-border);
+}
+.navbar .nav-link, .navbar-brand, .sidebar-custom .nav-link {
+  color: #fff !important;
+}
+.navbar .nav-link.active, .navbar .nav-link:hover,
+.sidebar-custom .nav-link.active, .sidebar-custom .nav-link:hover {
+  color: var(--color-accent) !important;
+  background: var(--color-card-hover);
+}
+.card, .playlist-card {
+  background: var(--color-accent-light) !important;
+  color: #fff !important;
+  border: 3px solid var(--color-glass-border) !important;
+}
+.card-title, .section-title, h2 {
+  color: #fff;
+}
+.card-text {
+  color: whitesmoke;
+}
+.btn-outline-primary {
+  color: whitesmoke;
+  border-color: var(--color-accent) !important;
+  background: var(--color-bg-glass);
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background: var(--color-accent) !important;
+  color: #fff !important;
+  border-color: var(--color-accent) !important;
+}
+.btn-outline-secondary {
+  color: var(--color-accent-light) !important;
+  border-color: var(--color-accent-light) !important;
+  background: transparent !important;
+}
+.btn-outline-secondary:hover, .btn-outline-secondary:focus {
+  background: var(--color-accent-light) !important;
+  color: var(--color-bg-main) !important;
+  border-color: var(--color-accent-light) !important;
+}
+input, textarea, select {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #444 !important;
+}
+footer {
+  background: var(--color-bg-glass);
+  color: var(--color-accent);
+}
+footer a {
+  color: var(--color-navbar);
+}
+footer a:hover {
+  color: var(--color-accent-light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+}
+</style>
 </head>
 <body>
-
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <ul class="navbar-nav flex-row me-auto">
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="/">Home</a>
-        </li>
-        <li class="nav-item me-3">
-          <a class="nav-link text-white" href="/select_mood">Select Mood</a>
-        </li>
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><i class="bi bi-book-half"></i> EaseFindBooks</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/recommend">FindBook</a></li>
+        <li class="nav-item"><a class="nav-link" href="/select_mood">GetByMood</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        {% if session.name %}
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="/profile" title="Profile" style="padding-top: 2px;">
+              <i class="bi bi-person-circle" style="font-size: 2rem; vertical-align: middle;"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="/login" style="font-size: 1.15rem; font-weight: 600; border-left: 2px solid #ae89fa; margin-left: 10px; padding-left: 18px;">
+              Login
+            </a>
+          </li>
+        {% endif %}
       </ul>
-      <a class="navbar-brand text-white ms-auto" href="#">Book Recommender</a>
     </div>
-  </nav>
+  </div>
+</nav>
 
   <!-- Main Content -->
-  <div class="container mt-5">
+  <div class="container mt-5 glass">
     <h2 class="section-heading">Books for Mood: {{ mood|capitalize }}</h2>
 
     {% if error %}
@@ -113,8 +315,8 @@
             <div class="card w-100">
               <img src="{{ book.image }}" class="card-img-top" alt="Cover of {{ book.title }}" />
               <div class="card-body text-center">
-                <h6 class="card-title text-color">{{ book.title }}</h6>
-                <p class="card-text text-color">by {{ book.author }}</p>
+                <h6 class="card-title">{{ book.title }}</h6>
+                <p class="card-text">{{ book.author }}</p>
               </div>
             </div>
           </div>
@@ -128,6 +330,34 @@
       <a href="/" class="btn btn-outline-primary">Go Home</a>
     </div>
   </div>
+
+<footer>
+    <div class="container text-center">
+      <div class="mb-2">
+        <a href="/"><i class="bi bi-house-door-fill"></i> Home</a>
+        <a href="/recommend">FindBook</a>
+        <a href="/select_mood">GetByMood</a>
+        <a href="/profilePage.html">User Profile Page</a>
+      </div>
+      <div class="mb-2">
+        <a href="mailto:suresh112813@gmail.com">suresh112813@gmail.com</a>
+        <a href="mailto:vikasshejul591@gmail.com">vikasshejul591@gmail.com</a>
+        <a href="mailto:mahajankalyani2005@email.com">mahajankalyani2005@email.com</a>
+        <a href="mailto:yashmpatil02005@email.com">yashmpatil02005@email.com</a>
+      </div>
+      <div class="mb-2">
+        <span>Follow us:</span>
+        <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div>
+        &copy; {{ year }} EaseFindBooks. All rights reserved.
+        <p>Team leader <a href="mailto:sureshrathod@gmail.com">sureshrathod@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
